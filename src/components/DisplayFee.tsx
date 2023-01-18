@@ -12,7 +12,7 @@ function DisplayFee(deliveryFee: any) {
         return (
             <div>
                 <br />
-                <p>Delivery Fee: {deliveryFee.deliveryFee}</p>
+                <p className="text-xl">Delivery Fee: {deliveryFee.deliveryFee}</p>
             </div>
         )
     }

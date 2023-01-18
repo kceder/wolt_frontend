@@ -21,12 +21,14 @@ const handleCalculate = ( state: State, setState: any ) => {
     
     const baseDeliveryFee: number = 200;
     const additionalDistanceFee: number = 100;
-
+    const cartValueInCents: number = state.cartValue * 100;
     let feeInCents: number = 0;
+
     console.log('------------------');
     console.log('calculating... ')
-    if (state.cartValue < 1000) {
-        feeInCents = 1000 - state.cartValue ;
+    console.log('cartValueInCents: ', cartValueInCents);
+    if (cartValueInCents < 1000) {
+        feeInCents = 1000 - cartValueInCents ;
     }
     const distanceFee: number = baseDeliveryFee;
     console.log('feeInCents before distance: ', feeInCents);
@@ -52,7 +54,10 @@ const handleCalculate = ( state: State, setState: any ) => {
     }
     console.log('feeInCents after extraItems: ', feeInCents);
     const orderDate = new Date(state.orderTime);
-    if (orderDate.getUTCHours() >= 15 && orderDate.getUTCHours() <= 19 && orderDate.getUTCDay() === 5) {
+    console.log('orderDate: ', orderDate);
+    console.log('orderDate.getUTCHours(): ', orderDate.getHours());
+    console.log('orderDate.getDay(): ', orderDate.getDay());
+    if (orderDate.getHours() >= 15 && orderDate.getHours() <= 18 && orderDate.getDay() === 5) {
         console.log('Friday 15-19!');
         feeInCents *= 1.2;
     }
@@ -102,13 +107,13 @@ const DeliveryCalcComponent: React.FC = () => {
             <label>
                 <br />
                 <br />
-                Cart Value:
-                <input type="number" name="cartValue" onChange={handleInputChange} value={state.cartValue} min="0" />
+                Cart Value (€):
+                <input type="float" name="cartValue" onChange={handleInputChange} value={state.cartValue} min="0" />
             </label>
             <label>
                 <br />
                 <br />
-                Delivery Distance:
+                Delivery Distance (m):
                 <input type="number" name="deliveryDistance" onChange={handleInputChange} value={state.deliveryDistance} min="0" />
             </label>
             <label>
