@@ -103,30 +103,30 @@ const DeliveryCalcComponent: React.FC = () => {
 
     return (
         <div>
-        <form onSubmit={handleSubmit}>
+        <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={handleSubmit}>
             <label>
                 <br />
                 <br />
-                Cart Value (€):
-                <input type="float" name="cartValue" onChange={handleInputChange} value={state.cartValue} min="0" />
+                <p className='text-left text-xs text-slate-400 '>Cart value (€):</p>
+                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="float" name="cartValue" onChange={handleInputChange} value={state.cartValue} min="0" />
             </label>
             <label>
                 <br />
                 <br />
-                Delivery Distance (m):
-                <input type="number" name="deliveryDistance" onChange={handleInputChange} value={state.deliveryDistance} min="0" />
+                <p className='text-left text-xs text-slate-400 '>Delivery Distance (m):</p>
+                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" name="deliveryDistance" onChange={handleInputChange} value={state.deliveryDistance} min="0" />
             </label>
             <label>
                 <br />
                 <br />
-                Number of Items:
-                <input type="number" name="numberOfItems" onChange={handleInputChange} value={state.numberOfItems} min="0" />
+                <p className='text-left text-xs text-slate-400 '>Number of Items:</p>
+                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" name="numberOfItems" onChange={handleInputChange} value={state.numberOfItems} min="0" />
             </label>
             <label>
                 <br />
                 <br />
-                Order Time:
-                <input type="datetime-local" name="orderTime" onChange={handleInputChange} value={state.orderTime} />
+                <p className='text-left text-xs text-slate-400 '>Order Time:</p>
+                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="datetime-local" name="orderTime" onChange={handleInputChange} value={state.orderTime} />
             </label>
             <br />
             <br />

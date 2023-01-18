@@ -1,6 +1,6 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .App {
   text-align: center;
@@ -22,6 +22,11 @@
   #wolt-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+#wolt-logo {
+  height: 10vmin;
+  pointer-events: none;
 }
 
 .App-header {
