@@ -10,9 +10,8 @@ function DisplayFee(deliveryFee: any) {
         )
     } else {
         return (
-            <div>
-                <br />
-                <p className="text-xl">Delivery Fee: {deliveryFee.deliveryFee}</p>
+            <div className="col-span-2">
+            <p className="text-l text-slate-400 ">Delivery Fee</p><p className="font-semibold">{deliveryFee.deliveryFee}€</p>
             </div>
         )
     }

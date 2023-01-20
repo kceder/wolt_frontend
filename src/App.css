@@ -14,41 +14,38 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  /* height: 40vmin; */
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  #wolt-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 #wolt-logo {
-  height: 10vmin;
+  height: 12vh;
   pointer-events: none;
 }
 
+.MenuItem-module__name___iqvnU {
+  padding: 0px;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  max-height: 2.8em;
+  font-weight: 600;
+  margin-bottom: 0.375rem;
+  color: var(--cb-textPrimary);
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
 .App-header {
-  background-color: #44b1f4;
-  height: 10vh;
+  background-color: #ffffff;
+  height: 15vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

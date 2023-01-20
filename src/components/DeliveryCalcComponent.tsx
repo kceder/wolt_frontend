@@ -44,8 +44,8 @@ const handleCalculate = ( state: State, setState: any ) => {
     feeInCents += distanceFee;
     console.log('Distance fee:', distanceFee);
     console.log('feeInCents before extraItems: ', feeInCents);
-    if (state.numberOfItems > 5) {
-        const extraItems: number = state.numberOfItems - 5;
+    if (state.numberOfItems >= 5) {
+        const extraItems: number = state.numberOfItems - 4;
         console.log('extraItems: ', extraItems);
         feeInCents += extraItems * 50;
         if (state.numberOfItems > 12) {
@@ -61,7 +61,7 @@ const handleCalculate = ( state: State, setState: any ) => {
         console.log('Friday 15-19!');
         feeInCents *= 1.2;
     }
-    if (state.cartValue >= 10000) {
+    if (cartValueInCents >= 10000) {
         feeInCents = 0;
     }
     const feeInEuros: number = Math.min(feeInCents, 1500) / 100;
@@ -102,37 +102,40 @@ const DeliveryCalcComponent: React.FC = () => {
     }
 
     return (
-        <div>
-        <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={handleSubmit}>
-            <label>
+        <div className='grid grid-cols-1 gap-4 p-4 mx-auto'>
+        <form className='bg-white rounded px-8 pt-6 pb-8 mb-4' onSubmit={handleSubmit}>
+            <label className='col-span-2 text-left max-w-xs'>
                 <br />
                 <br />
-                <p className='text-left text-xs text-slate-400 '>Cart value (€):</p>
-                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="float" name="cartValue" onChange={handleInputChange} value={state.cartValue} min="0" />
+                <p className='text-xs text-slate-400 ml-3'>Cart value (€):</p>
+                <input className='font-semibold text-lg w-full py-2 px-3 focus:outline-none ' placeholder='Cart Value' type="float" name="cartValue" onChange={handleInputChange} value={state.cartValue} min="0" />
+                <hr />
             </label>
-            <label>
+            <label className='col-span-2 text-left max-w-xs'>
                 <br />
-                <br />
-                <p className='text-left text-xs text-slate-400 '>Delivery Distance (m):</p>
-                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" name="deliveryDistance" onChange={handleInputChange} value={state.deliveryDistance} min="0" />
+                <p className='text-xs text-slate-400 ml-3'>Delivery Distance (m):</p>
+                <input className='font-semibold text-lg w-full py-2 px-3 focus:outline-none' placeholder='Delivery Distance' type="number" name="deliveryDistance" onChange={handleInputChange} value={state.deliveryDistance} min="0" />
+                <hr />            
             </label>
-            <label>
+            <label className='col-span-2 text-left max-w-xs'>
                 <br />
                 <br />
-                <p className='text-left text-xs text-slate-400 '>Number of Items:</p>
-                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="number" name="numberOfItems" onChange={handleInputChange} value={state.numberOfItems} min="0" />
+                <p className='text-xs text-slate-400 ml-3'>Number of Items:</p>
+                <input className='font-semibold text-lg w-full py-2 px-3 focus:outline-none' placeholder='Number of Items' type="number" name="numberOfItems" onChange={handleInputChange} value={state.numberOfItems} min="0" />
+                <hr />
             </label>
-            <label>
+            <label className='col-span-2 text-left max-w-xs'>
                 <br />
                 <br />
-                <p className='text-left text-xs text-slate-400 '>Order Time:</p>
-                <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type="datetime-local" name="orderTime" onChange={handleInputChange} value={state.orderTime} />
+                <p className='text-xs text-slate-400 ml-3'>Order Time:</p>
+                <input className='font-semibold text-lg w-full py-2 px-3 focus:outline-none' type="datetime-local" name="orderTime" onChange={handleInputChange} value={state.orderTime} />
+                <hr />
             </label>
             <br />
             <br />
-            <button type="submit" onClick={() => handleCalculate(state, setState)}>Calculate Delivery Price</button>
-        </form>
+            <button className='bg-white border font-semibold hover:bg-[#44b1f4] hover:scale-[1.1] focus:ring-4 focus:ring-[#44b1f4] font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none' type="submit" onClick={() => handleCalculate(state, setState)}>Calculate</button>
             <DisplayFee deliveryFee={state.deliveryFee} />
+        </form>
         </div>
     )
 }
