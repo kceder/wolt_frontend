@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .App {
-  text-align: center;
+  /* text-align: center; */
   background-color: #ffffff;
   --primary-color: #rgb(0, 157, 224);
 }
@@ -48,4 +48,9 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.input-icon::before {
+  content: "🔍";
+  left: 40px;
 }

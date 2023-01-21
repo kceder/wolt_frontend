@@ -1,3 +1,5 @@
+import '../App.css';
+
 function DisplayFee(deliveryFee: any) {
 
     console.log('deliveryFee: ', deliveryFee);
