@@ -6,6 +6,7 @@
   /* text-align: center; */
   background-color: #ffffff;
   --primary-color: #rgb(0, 157, 224);
+  font: system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .showDeliveryFee {
@@ -14,13 +15,27 @@
 }
 
 .App-logo {
-  /* height: 40vmin; */
   pointer-events: none;
 }
 
 #wolt-logo {
-  height: 12vh;
-  pointer-events: none;
+  height: 10vh;
+  margin-left: 2rem;
+  /* pointer-events: none; */
+}
+
+@keyframes slide-in-left {
+  10% {
+    transform: translateX(-150%);
+  }
+  15% {
+    transform: translateX(0);
+  }
+}
+
+.logo-animation {
+    animation: slide-in-left 10s ease-in-out;
+    animation-iteration-count: infinite;
 }
 
 .MenuItem-module__name___iqvnU {
@@ -48,9 +63,4 @@
 
 .App-link {
   color: #61dafb;
-}
-
-.input-icon::before {
-  content: "🔍";
-  left: 40px;
 }
