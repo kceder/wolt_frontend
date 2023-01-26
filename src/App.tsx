@@ -6,12 +6,10 @@ import Footer from '../src/components/Footer';
 
 function App() {
   return (
-    <div className="App">
-
+    <div className="bg-white dark:bg-black h-screen">
         <Header />
         <DeliveryCalcComponent />
         <Footer />
-
     </div>
   );
 }
