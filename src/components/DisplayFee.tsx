@@ -15,8 +15,8 @@ function DisplayFee({
         <div className="absolute inset-0 bg-gray-500 opacity-75 dark:opacity-30"></div>
       </div>
 
-      <div className="dark:bg-black rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-        <div className="dark:bg-dark px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+      <div className="bg-white dark:bg-black rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+        <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div className="sm:flex sm:items-start">
             <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
               <svg

@@ -11,71 +11,75 @@ interface State {
   deliveryFee: number;
 }
 
-// function to calculate delivery fee
-export const handleCalculate = (state: State) => {
-  // prices are in cents 100 = 1€
-  const baseDeliveryFee: number = 200;
+// function to calculate distance fee
+const calcDistanceFee = (state: State) => {
   const additionalDistanceFee: number = 100;
-  const cartValueInCents: number = state.cartValue * 100;
-  let feeInCents: number = 0;
-  // turn cart value from € to cents
-  if (cartValueInCents < 1000) {
-    feeInCents = 1000 - cartValueInCents;
-  }
-  // add base delivery fee
-  const distanceFee: number = baseDeliveryFee;
-  // count additional distance fee
   if (state.deliveryDistance > 1000) {
     const extraDistance: number = state.deliveryDistance - 1000;
-    const roundedExtraDistance: number = Math.ceil(extraDistance / 500) * 500;
     const extra500m: number = Math.ceil(extraDistance / 500);
-    feeInCents += extra500m * additionalDistanceFee;
+    return extra500m * additionalDistanceFee;
   }
-  // add distance fee
-  feeInCents += distanceFee;
-  // count additional item fee
-  if (state.numberOfItems >= 5) {
+  else
+    return 0;
+};
+// function to calculate additional items fee
+const calcAdditionalItemFee = (state: State) => {
+  let extraItemsFee: number = 0;
+  if (state.numberOfItems >= 5) { // add additional items fee if more than 4 items
     const extraItems: number = state.numberOfItems - 4;
-    // 50 cents per item
-    feeInCents += extraItems * 50;
-    // add bulk fee
-    if (state.numberOfItems > 12) {
-      feeInCents += 120;
+    extraItemsFee += extraItems * 50; // 50 cents per item
+    if (state.numberOfItems > 12) {    // add bulk fee
+      extraItemsFee += 120;
     }
   }
-  // check if order is placed between 3pm and 18.59pm on a friday
+  return extraItemsFee;
+};
+
+// function to add rush fee if order is placed on Friday 3-7pm
+const addRushFee = (state: State) => {
   const orderDate = new Date(state.orderTime);
   if (
-    orderDate.getHours() >= 15 &&
-    orderDate.getHours() <= 18 &&
-    orderDate.getDay() === 5
+    orderDate.getUTCHours() >= 15 &&
+    orderDate.getUTCHours() <= 18 &&
+    orderDate.getUTCDay() === 5
   ) {
-    // add 1.2x friday rush fee
-    feeInCents *= 1.2;
+    return 1.2; // add 1.2x friday rush fee
   }
-  // set fee to 0 if cart value is 100€ or more
-  if (cartValueInCents >= 10000) {
-    feeInCents = 0;
-  }
-  // convert fee to €. Max fee is 15€
-  const feeInEuros: number = Math.min(feeInCents, 1500) / 100;
-  return feeInEuros;
+  return 1; // no rush fee added
+};
+
+// function to calculate total delivery fee
+export const calculateTotalFee = (state: State) => {
+  // prices are in cents. 100 = 1€
+  const baseDeliveryFee: number = 200;
+  const cartValueInCents: number = state.cartValue * 100; // turn cart value from € to cents
+  let feeInCents: number  = 0;
+
+  if (cartValueInCents >= 10000) // if cart value is over 100€, delivery is free
+    return 0;
+  if (cartValueInCents < 1000) // add small order surcharge
+    feeInCents = 1000 - cartValueInCents;
+
+  feeInCents += baseDeliveryFee; // add base delivery fee
+  feeInCents += calcDistanceFee(state); // count and add distance fee
+  feeInCents += calcAdditionalItemFee(state); // count and add additional items fee
+  feeInCents *= addRushFee(state); // add rush fee if Fri 3-7pm
+
+  return Math.min(feeInCents, 1500) / 100; // return fee in €. Max fee is 15€
 };
 
 // component to calculate and display delivery fee
 const DeliveryCalcComponent: React.FC = () => {
-  // set initial states for input values and delivery fee
   const timeZonesOffset: number = new Date().getTimezoneOffset();
-  const [submitted, setSubmitted] = useState(false);
-  const [state, setState] = useState<State>({
+  const [submitted, setSubmitted] = useState(false); // state for conditional rendering
+  const [state, setState] = useState<State>({ // state for input values and delivery fee
     cartValue: 0,
     deliveryDistance: 0,
     numberOfItems: 0,
-    orderTime: new Date(Date.now() - timeZonesOffset * 60000)
-      .toISOString()
-      .slice(0, 16),
+    orderTime: new Date(Date.now() - timeZonesOffset * 60000).toISOString().slice(0, 16),
     deliveryFee: 0,
   });
+
   // handle all input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -83,18 +87,18 @@ const DeliveryCalcComponent: React.FC = () => {
       ...state,
       [name]: value,
     });
-    console.log("state: ", state);
-    // handleCalculate(state, setState);
   };
+
   // handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
-    const result = handleCalculate(state);
+    // check that all input values are valid
+    const result = calculateTotalFee(state);
     setState({
       ...state,
       deliveryFee: result,
     });
+    setSubmitted(true);
   };
 
   return (
@@ -141,6 +145,7 @@ const DeliveryCalcComponent: React.FC = () => {
                 name="cartValue"
                 onChange={handleInputChange}
                 min="0"
+                required
               />
               <hr className="dark:border-gray-800" />
             </div>
@@ -176,6 +181,7 @@ const DeliveryCalcComponent: React.FC = () => {
                 name="deliveryDistance"
                 onChange={handleInputChange}
                 min="0"
+                required
               />
               <hr className="dark:border-gray-800" />
             </div>
@@ -208,6 +214,7 @@ const DeliveryCalcComponent: React.FC = () => {
                 name="numberOfItems"
                 onChange={handleInputChange}
                 min="0"
+                required
               />
               <hr className="dark:border-gray-800" />
             </div>
@@ -241,6 +248,7 @@ const DeliveryCalcComponent: React.FC = () => {
                 name="orderTime"
                 onChange={handleInputChange}
                 value={state.orderTime}
+                required
               />
               <hr className="dark:border-gray-800" />
             </div>
@@ -250,7 +258,7 @@ const DeliveryCalcComponent: React.FC = () => {
           <button
             className="block border dark:border-white font-semibold hover:bg-[#44b1f4] rounded-lg text-sm mx-auto px-4 py-2 focus:outline-none dark:bg-black dark:text-white"
             type="submit"
-            onClick={() => handleCalculate(state)}
+            onClick={() => calculateTotalFee(state)}
           >
             Calculate
           </button>
