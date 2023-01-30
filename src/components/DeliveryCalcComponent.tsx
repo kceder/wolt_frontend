@@ -12,7 +12,7 @@ interface State {
 }
 
 // function to calculate delivery fee
-const handleCalculate = (state: State, setState: any) => {
+export const handleCalculate = (state: State) => {
   // prices are in cents 100 = 1€
   const baseDeliveryFee: number = 200;
   const additionalDistanceFee: number = 100;
@@ -59,10 +59,7 @@ const handleCalculate = (state: State, setState: any) => {
   }
   // convert fee to €. Max fee is 15€
   const feeInEuros: number = Math.min(feeInCents, 1500) / 100;
-  setState({
-    ...state,
-    deliveryFee: feeInEuros,
-  });
+  return feeInEuros;
 };
 
 // component to calculate and display delivery fee
@@ -93,7 +90,11 @@ const DeliveryCalcComponent: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
-    handleCalculate(state, setState);
+    const result = handleCalculate(state);
+    setState({
+      ...state,
+      deliveryFee: result,
+    });
   };
 
   return (
@@ -249,7 +250,7 @@ const DeliveryCalcComponent: React.FC = () => {
           <button
             className="block border dark:border-white font-semibold hover:bg-[#44b1f4] rounded-lg text-sm mx-auto px-4 py-2 focus:outline-none dark:bg-black dark:text-white"
             type="submit"
-            onClick={() => handleCalculate(state, setState)}
+            onClick={() => handleCalculate(state)}
           >
             Calculate
           </button>
