@@ -6,7 +6,7 @@ import Footer from '../src/components/Footer';
 
 function App() {
   return (
-    <div className="bg-white dark:bg-black h-screen">
+    <div className="bg-white dark:bg-[#121212] h-screen">
         <Header />
         <DeliveryCalcComponent />
         <Footer />

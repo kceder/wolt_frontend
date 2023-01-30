@@ -138,7 +138,7 @@ const DeliveryCalcComponent: React.FC = () => {
             </div>
             <div className="basis-[90%]">
               <input
-                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-black dark:text-gray-400"
+                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
                 placeholder="Cart Value"
                 type="number"
                 step="0.01"
@@ -175,7 +175,7 @@ const DeliveryCalcComponent: React.FC = () => {
             </div>
             <div className="basis-[90%]">
               <input
-                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-black dark:text-gray-400"
+                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
                 placeholder="Delivery Distance"
                 type="number"
                 name="deliveryDistance"
@@ -208,7 +208,7 @@ const DeliveryCalcComponent: React.FC = () => {
             </div>
             <div className="basis-[90%]">
               <input
-                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-black dark:text-gray-400"
+                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
                 placeholder="Number of Items"
                 type="number"
                 name="numberOfItems"
@@ -243,7 +243,7 @@ const DeliveryCalcComponent: React.FC = () => {
             </div>
             <div className="basis-[90%]">
               <input
-                className="font-semibold text-sm py-2 px-3 focus:outline-none dark:bg-black dark:text-gray-400"
+                className="font-semibold text-sm py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
                 type="datetime-local"
                 name="orderTime"
                 onChange={handleInputChange}
@@ -256,7 +256,7 @@ const DeliveryCalcComponent: React.FC = () => {
           <br />
           <br />
           <button
-            className="block border dark:border-white font-semibold hover:bg-[#44b1f4] rounded-lg text-sm mx-auto px-4 py-2 focus:outline-none dark:bg-black dark:text-white"
+            className="block border dark:border-white font-semibold hover:bg-[#44b1f4] rounded-lg text-sm mx-auto px-4 py-2 focus:outline-none dark:bg-[#121212] dark:text-white"
             type="submit"
             onClick={() => calculateTotalFee(state)}
           >
