@@ -1,14 +1,13 @@
 import "../App.css";
 
+// Component to display delivery fee in modal
 function DisplayFee({
   deliveryFee,
   setSubmitted,
 }: {
-  deliveryFee: any;
-  setSubmitted: any;
+  deliveryFee: number;
+  setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  console.log("deliveryFee: ", deliveryFee);
-  console.log("setSubmitted: ", setSubmitted);
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <div className="fixed inset-0 transition-opacity">
@@ -37,11 +36,11 @@ function DisplayFee({
 
             <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
-                Delivery Fee
+                {deliveryFee === 0 ? "Free Delivery" : "Delivery Fee"}
               </h3>
               <div className="mt-2">
                 <p className="text-sm leading-5 text-gray-500 dark:text-white">
-                  {deliveryFee} €
+                  {deliveryFee !== 0 ? deliveryFee : "🎉"}
                 </p>
               </div>
             </div>
