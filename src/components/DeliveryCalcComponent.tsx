@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "../App.css";
 import DisplayFee from "./DisplayFee";
+import InputCartValue from "./inputComponents/InputCartValue";
+import InputDistance from "./inputComponents/InputDistance";
+import InputItemCount from "./inputComponents/InputItemCount";
+import InputTime from "./inputComponents/InputTime"
 // interface for input values
-interface State {
+export interface State {
   cartValue: number;
   deliveryDistance: number;
   numberOfItems: number;
@@ -11,23 +15,23 @@ interface State {
 }
 
 // function to calculate distance fee
-const calcDistanceFee = (state: State) : number => {
+const calcDistanceFee = (state: State): number => {
   const additionalDistanceFee: number = 100;
   if (state.deliveryDistance > 1000) {
     const extraDistance: number = state.deliveryDistance - 1000;
     const extra500m: number = Math.ceil(extraDistance / 500);
     return extra500m * additionalDistanceFee;
-  }
-  else
-    return 0;
+  } else return 0;
 };
 // function to calculate additional items fee
-const calcAdditionalItemFee = (state: State) : number => {
+const calcAdditionalItemFee = (state: State): number => {
   let extraItemsFee: number = 0;
-  if (state.numberOfItems >= 5) { // add additional items fee if more than 4 items
+  if (state.numberOfItems >= 5) {
+    // add additional items fee if more than 4 items
     const extraItems: number = state.numberOfItems - 4;
     extraItemsFee += extraItems * 50; // 50 cents per item
-    if (state.numberOfItems > 12) {    // add bulk fee
+    if (state.numberOfItems > 12) {
+      // add bulk fee
       extraItemsFee += 120;
     }
   }
@@ -35,7 +39,7 @@ const calcAdditionalItemFee = (state: State) : number => {
 };
 
 // function to add rush fee if order is placed on Friday 3-7pm
-const addRushFee = (state: State) : number => {
+const addRushFee = (state: State): number => {
   const orderDate = new Date(state.orderTime);
   if (
     orderDate.getUTCHours() >= 15 &&
@@ -48,15 +52,17 @@ const addRushFee = (state: State) : number => {
 };
 
 // function to calculate total delivery fee
-export const calculateTotalFee = (state: State) : number => {
+export const calculateTotalFee = (state: State): number => {
   // prices are in cents. 100 = 1€
   const baseDeliveryFee: number = 200;
   const cartValueInCents: number = state.cartValue * 100; // turn cart value from € to cents
-  let feeInCents: number  = 0;
+  let feeInCents: number = 0;
 
-  if (cartValueInCents >= 10000) // if cart value is over 100€, delivery is free
+  if (cartValueInCents >= 10000)
+    // if cart value is over 100€, delivery is free
     return 0;
-  if (cartValueInCents < 1000) // add small order surcharge
+  if (cartValueInCents < 1000)
+    // add small order surcharge
     feeInCents = 1000 - cartValueInCents;
 
   feeInCents += baseDeliveryFee; // add base delivery fee
@@ -67,34 +73,42 @@ export const calculateTotalFee = (state: State) : number => {
   return Math.min(feeInCents, 1500) / 100; // return fee in €. Max fee is 15€
 };
 
+// handle all input changes
+export const handleInputChange = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  setState: any,
+  state: any
+) => {
+  const { name, value } = e.target;
+  setState({
+    ...state,
+    [name]: value,
+  });
+};
+
 // Main component for calculator form and fee display
 // if submitted, display fee with DisplayFee component
 const DeliveryCalcComponent: React.FC = () => {
   const timeZonesOffset: number = new Date().getTimezoneOffset();
   const [submitted, setSubmitted] = useState(false); // state for conditional rendering
-  const [state, setState] = useState<State>({ // state for input values and delivery fee
+  const [state, setState] = useState<State>({
+    // state for input values and delivery fee
     cartValue: 0,
     deliveryDistance: 0,
     numberOfItems: 0,
     // set order time to current time by default
-    orderTime: new Date(Date.now() - timeZonesOffset * 60000).toISOString().slice(0, 16),
+    orderTime: new Date(Date.now() - timeZonesOffset * 60000)
+      .toISOString()
+      .slice(0, 16),
     deliveryFee: 0,
   });
-
-  // handle all input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
 
   // handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = calculateTotalFee(state); // calculate delivery fee
-    setState({ // update state with delivery fee
+    setState({
+      // update state with delivery fee
       ...state,
       deliveryFee: result,
     });
@@ -116,143 +130,10 @@ const DeliveryCalcComponent: React.FC = () => {
           className="max-w-md mx-auto rounded px-8 my-24"
           onSubmit={handleSubmit}
         >
-          <br />
-          <p className="ml-[2.55rem] text-xs text-slate-400 dark:text-white">
-            Cart value (€)
-          </p>
-          <div className="group flex flex-row items-center text-left">
-            <div className="mr-1">
-              <svg
-                className="transition ease-in-out group-hover:scale-125 h-6 w-6 text-[#00c8ff]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="9" cy="21" r="1" />
-                <circle cx="20" cy="21" r="1" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-              </svg>
-            </div>
-            <div className="basis-[90%]">
-              <input
-                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
-                placeholder="Cart Value"
-                type="number"
-                step="0.01"
-                name="cartValue"
-                onChange={handleInputChange}
-                min="0"
-                required
-              />
-              <hr className="dark:border-gray-800" />
-            </div>
-          </div>
-          <br />
-          <p className="ml-[2.55rem] text-xs text-slate-400 dark:text-white">
-            Delivery Distance (m)
-          </p>
-          <div className="group flex flex-row items-center text-left">
-            <div className="mr-1">
-              <svg
-                className="transition ease-in-out group-hover:scale-125 h-6 w-6 text-[#00c8ff]"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <circle cx="6" cy="19" r="2" />
-                <circle cx="18" cy="5" r="2" />
-                <path d="M12 19h4.5a3.5 3.5 0 0 0 0 -7h-8a3.5 3.5 0 0 1 0 -7h3.5" />
-              </svg>
-            </div>
-            <div className="basis-[90%]">
-              <input
-                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
-                placeholder="Delivery Distance"
-                type="number"
-                name="deliveryDistance"
-                onChange={handleInputChange}
-                min="0"
-                required
-              />
-              <hr className="dark:border-gray-800" />
-            </div>
-          </div>
-          <br />
-          <p className="ml-[2.55rem] text-xs text-slate-400 dark:text-white">
-            Number of Items
-          </p>
-          <div className="group flex flex-row items-center text-left">
-            <div className="mr-1">
-              <svg
-                className="transition ease-in-out group-hover:scale-125 h-6 w-6 text-[#00c8ff]"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="12" y1="20" x2="12" y2="10" />
-                <line x1="18" y1="20" x2="18" y2="4" />
-                <line x1="6" y1="20" x2="6" y2="16" />
-              </svg>
-            </div>
-            <div className="basis-[90%]">
-              <input
-                className="font-semibold text-sm w-full py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
-                placeholder="Number of Items"
-                type="number"
-                name="numberOfItems"
-                onChange={handleInputChange}
-                min="0"
-                required
-              />
-              <hr className="dark:border-gray-800" />
-            </div>
-          </div>
-          <br />
-          <p className="ml-[2.55rem] text-xs text-slate-400 dark:text-white">
-            Order Time
-          </p>
-          <div className="group flex flex-row items-center text-left">
-            <div className="mr-1">
-              <svg
-                className="transition ease-in-out group-hover:scale-125 h-6 w-6 text-[#00c8ff]"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <polyline points="12 8 12 12 14 14" />
-                <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
-              </svg>
-            </div>
-            <div className="basis-[90%]">
-              <input
-                className="font-semibold text-sm py-2 px-3 focus:outline-none dark:bg-[#121212] dark:text-gray-400"
-                type="datetime-local"
-                name="orderTime"
-                onChange={handleInputChange}
-                value={state.orderTime}
-                required
-              />
-              <hr className="dark:border-gray-800" />
-            </div>
-          </div>
+          <InputCartValue state={state} setState={setState} />
+          <InputDistance state={state} setState={setState} />
+          <InputItemCount state={state} setState={setState} />
+          <InputTime state={state} setState={setState} />
           <br />
           <br />
           <button

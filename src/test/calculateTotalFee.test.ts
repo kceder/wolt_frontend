@@ -15,6 +15,9 @@ describe("calculateTotalFee", () => {
       [{ ...inputs, cartValue: 7 }, 7],
       [{ ...inputs, cartValue: 11 }, 4],
       [{ ...inputs, cartValue: 100 }, 0],
+      [{ ...inputs, cartValue: 0.1 }, 13.9],
+      [{ ...inputs, cartValue: 97.2 }, 4],
+      [{ ...inputs, cartValue: 13243738932 }, 0],
     ])("should return the correct delivery fee", (input, expected) => {
       const result = calculateTotalFee(input);
       expect(result).toBe(expected);
