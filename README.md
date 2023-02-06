@@ -3,6 +3,7 @@
 
 A delivery fee calculator built with TypeScript and React. Assignment for Wolt.
 This was my first time using TypeScript and a great excuse to do so!
+Creating dark mode, light mode and mobile layout was also nice little introduction to Tailwind.
 
 ## How to run?
 

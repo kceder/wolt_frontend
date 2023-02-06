@@ -1,9 +1,7 @@
 import React from "react";
 import "../App.css";
-import wolt_logo from "../images/wolt.svg";
 
-// header component that uses wolt logo
-
+// header component that uses wolt logo svg
 const Header: React.FC = () => {
   return (
     <nav className="flex justify-center sm:justify-start items-center border-b dark:border-gray-800">

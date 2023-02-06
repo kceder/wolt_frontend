@@ -1,3 +1,4 @@
+// Footer component. Not shown on mobile devices.
 const Footer = () => {
   return (
     <footer className="hidden sm:block absolute bottom-0 w-full">

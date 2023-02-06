@@ -76,8 +76,8 @@ export const calculateTotalFee = (state: State): number => {
 // handle all input changes
 export const handleInputChange = (
   e: React.ChangeEvent<HTMLInputElement>,
-  setState: any,
-  state: any
+  setState: React.Dispatch<React.SetStateAction<State>>,
+  state: State
 ) => {
   const { name, value } = e.target;
   setState({
